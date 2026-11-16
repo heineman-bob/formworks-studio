@@ -1,0 +1,12 @@
+services:
+  configurator:
+    build: .
+    ports:
+      - "8080:8080"
+    environment:
+      OPENSCAD_BIN: openscad
+    volumes:
+      - openscad_cache:/tmp/window-fan-cache
+    restart: unless-stopped
+volumes:
+  openscad_cache:

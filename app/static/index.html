@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WindowFan Studio — modular fan generator</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<header><div class="brand"><div class="brandmark">▦</div><div><strong>WINDOWFAN <span>STUDIO</span></strong><small>MODULAR PRINT KIT GENERATOR</small></div></div><span class="status"><i></i> OpenSCAD ENGINE</span></header>
+<main>
+<aside class="panel">
+  <h1>Build your<br><em>window array.</em></h1>
+  <p class="sub">Set the clear opening, arrange fan and solid cells, then export a printable kit with exact quantities.</p>
+
+  <div class="section-label">01 / OPENING</div>
+  <div class="two">
+    <label>WIDTH <span>mm</span><input type="number" id="width" min="200" max="4000" step="1" value="664"></label>
+    <label>HEIGHT <span>mm</span><input type="number" id="height" min="140" max="1200" step="1" value="280"></label>
+    <label>WIDTH CLEARANCE <span>mm</span><input type="number" id="clearance_x" min="0" max="20" step="1" value="0"></label>
+    <label>HEIGHT CLEARANCE <span>mm</span><input type="number" id="clearance_y" min="0" max="20" step="1" value="0"></label>
+  </div>
+  <p class="hint">Clearance is subtracted from the measured opening before panels are sized.</p>
+
+  <div class="section-label space">02 / MODULES</div>
+  <div class="two">
+    <label>140 MM COLUMNS<input type="number" id="slots" min="1" max="20" step="1" value="3"></label>
+    <label>140 MM ROWS<input type="number" id="rows" min="1" max="8" step="1" value="2"></label>
+  </div>
+  <label>CONTROLLER COLUMN
+    <select id="controller"><option value="right">Right side</option><option value="left">Left side</option><option value="none">None</option></select>
+  </label>
+  <div id="suggestion" class="suggestion" hidden><span id="suggestionText"></span><button id="addFan" class="small-button" type="button">Add fan column</button></div>
+  <div class="pattern-head"><div><strong>FAN / SOLID LAYOUT</strong><small>Click a cell to switch it. Top row is shown first.</small></div></div>
+  <div class="presets"><button type="button" id="allFans">All fans</button><button type="button" id="alternate">Alternate</button><button type="button" id="solidColumns">Solid edges</button></div>
+  <div id="patternGrid" class="pattern-grid" aria-label="Fan and solid panel layout"></div>
+
+  <div class="section-label space">03 / SIDE PANELS</div>
+  <label>PANEL SIZING<select id="panel_mode"><option value="auto">Automatic, printable widths</option><option value="manual">Enter widths manually</option></select></label>
+  <div id="autoPanels"><label>PLACE SIDE PANELS<select id="side"><option value="right">Right</option><option value="left">Left</option><option value="split">Split across both sides</option></select></label></div>
+  <div id="manualPanels" hidden><div class="two"><label>LEFT WIDTHS <span>mm</span><input id="left_panels" type="text" placeholder="e.g. 60, 80"></label><label>RIGHT WIDTHS <span>mm</span><input id="right_panels" type="text" placeholder="e.g. 140"></label></div><p class="hint">Comma-separated widths, 22–220 mm each. The final panel is adjusted to cover the remaining width.</p><button type="button" id="resetPanels" class="text-button">Use automatic widths</button></div>
+  <div id="panelSummary" class="summary-line">—</div>
+
+  <div class="section-label space">04 / TOP RAIL</div>
+  <div class="rail-controls"><label>RAIL HEIGHT <span>mm · 0 = none</span><input id="rail" type="number" min="0" max="100" step="1" value="0"></label><button type="button" id="fitRail" class="small-button">Fit available height</button></div>
+  <p class="hint">A rail section is generated above every column when height is 7–100 mm. A 0 mm rail leaves the row tops exposed.</p>
+
+  <div class="section-label space">05 / FIT & PARTS</div>
+  <div id="adjustment" class="adjustment" hidden></div>
+  <div id="error" class="error" hidden></div>
+  <div class="metrics"><div><small>FANS</small><strong id="total">—</strong></div><div><small>SOLID CELLS</small><strong id="solidTotal">—</strong></div><div><small>SIDE PANELS</small><strong id="panelTotal">—</strong></div><div><small>TOP GAP</small><strong id="topGap">—</strong></div></div>
+  <div id="fitSummary" class="summary-line"></div>
+  <div class="part-head"><div><strong>PRINT LIST</strong><small>Every unique printable component. Select one to inspect it.</small></div><strong id="printTotal">—</strong></div>
+  <div id="partList" class="part-list"></div>
+  <div class="part-head"><div><strong>FULL CONFIGURATION</strong><small>Dimensions and layout used for this kit.</small></div></div>
+  <div id="configList" class="config-list"></div>
+  <button id="downloadConfig" class="text-button" type="button">⬇ Download configuration JSON</button>
+  <button id="download" class="primary">⬇ &nbsp; EXPORT PRINTABLE STL KIT</button>
+  <div id="progress" class="progress" role="status">Configure the layout to generate parts.</div>
+  <p class="note">Alignment pegs locate stacked rows. The printed assembly still needs window retention and weather sealing.</p>
+</aside>
+<section class="viewport">
+  <div class="view-top"><div><span class="eyebrow">LIVE MESH PREVIEW</span><h2 id="heading">WINDOW ARRAY</h2></div><div class="view-actions"><button id="viewAssembly" title="Show full assembly">▦ Assembly</button><button id="reset" title="Reset camera">⌖ Recenter</button><button id="wire" title="Toggle wireframe">◇ Edges</button></div></div>
+  <div id="viewer"><div id="loading">Building OpenSCAD meshes…</div><div class="axis">X → WIDTH &nbsp; · &nbsp; Z ↑ HEIGHT &nbsp; · &nbsp; Y = AIRFLOW</div></div>
+  <div class="legend"><span><b class="swatch fan"></b> FAN</span><span><b class="swatch grille"></b> GRILLE</span><span><b class="swatch ctrl"></b> CONTROLLER</span><span><b class="swatch filler"></b> SOLID / SIDE PANEL</span><span><b class="swatch trim"></b> TOP RAIL</span></div>
+  <div class="footnote"><strong>BUILD NOTE</strong> — Preview shows printable geometry. Secure the array independently inside the window; alignment pegs are not clamps.</div>
+</section>
+</main>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.163.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.163.0/examples/jsm/"}}</script>
+<script type="module" src="/app.js"></script>
+</body></html>
