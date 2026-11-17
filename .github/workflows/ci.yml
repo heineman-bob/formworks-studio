@@ -1,0 +1,25 @@
+name: CI
+on:
+  push:
+  pull_request:
+jobs:
+  test-and-build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: studio/package-lock.json
+      - name: Validate generator configuration
+        run: python -m unittest discover -s tests -q
+      - name: Check designer JavaScript
+        run: node --check app/static/app.js
+      - name: Build studio
+        run: |
+          npm ci --prefix studio --no-audit --no-fund
+          npm run build --prefix studio

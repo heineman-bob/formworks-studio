@@ -1,0 +1,6 @@
+.git
+studio/node_modules
+studio/dist
+**/__pycache__
+**/*.pyc
+dist
