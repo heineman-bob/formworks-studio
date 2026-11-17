@@ -1,100 +1,458 @@
 <!doctype html>
 <html lang="en">
-<head>
-  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>WindowFan Studio — modular fan generator</title>
-  <link rel="stylesheet" href="/style.css">
-</head>
-<body>
-<header><div class="brand"><div class="brandmark">▦</div><div><strong>WINDOWFAN <span>STUDIO</span></strong><small>MODULAR PRINT KIT GENERATOR</small></div></div><span class="status"><i></i> OpenSCAD ENGINE</span></header>
-<main>
-<aside class="panel">
-  <h1>Build your<br><em>window array.</em></h1>
-  <p class="sub">Set the clear opening, arrange fan and solid cells, then export a printable kit with exact quantities.</p>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>WindowFan Studio — modular fan generator</title>
+    <link rel="stylesheet" href="/style.css" />
+  </head>
+  <body>
+    <header>
+      <div class="brand">
+        <div class="brandmark">▦</div>
+        <div>
+          <strong>WINDOWFAN <span>STUDIO</span></strong
+          ><small>MODULAR PRINT KIT GENERATOR</small>
+        </div>
+      </div>
+      <span class="status"><i></i> OpenSCAD ENGINE</span>
+    </header>
+    <main>
+      <aside class="panel">
+        <h1>Build your<br /><em>window array.</em></h1>
+        <p class="sub">
+          Set the clear opening, arrange fan and solid cells, then export a printable kit with exact
+          quantities.
+        </p>
 
-  <div class="section-label">01 / OPENING</div>
-  <div class="two">
-    <label>WIDTH <span>mm</span><input type="number" id="width" min="200" max="4000" step="1" value="664"></label>
-    <label>HEIGHT <span>mm</span><input type="number" id="height" min="140" max="1200" step="1" value="300"></label>
-    <label>WIDTH CLEARANCE <span>mm</span><input type="number" id="clearance_x" min="0" max="20" step="1" value="0"></label>
-    <label>HEIGHT CLEARANCE <span>mm</span><input type="number" id="clearance_y" min="0" max="20" step="1" value="0"></label>
-  </div>
-  <p class="hint">Clearance is subtracted from the measured opening before panels are sized.</p>
-  <div class="pattern-head"><strong>STARTING WIDTHS</strong><small>Reference examples only. Replace with your measured clear opening before export.</small></div>
-  <div class="presets opening-presets"><button type="button" data-example-width="610">US example · 610</button><button type="button" data-example-width="762">US example · 762</button><button type="button" data-example-width="914">US example · 914</button><button type="button" data-example-width="800">Metric example · 800</button><button type="button" data-example-width="1000">Metric example · 1000</button></div>
+        <div class="section-label">01 / OPENING</div>
+        <div class="two">
+          <label
+            >WIDTH <span>mm</span
+            ><input type="number" id="width" min="200" max="4000" step="1" value="664"
+          /></label>
+          <label
+            >HEIGHT <span>mm</span
+            ><input type="number" id="height" min="140" max="1200" step="1" value="300"
+          /></label>
+          <label
+            >WIDTH CLEARANCE <span>mm</span
+            ><input type="number" id="clearance_x" min="0" max="20" step="1" value="0"
+          /></label>
+          <label
+            >HEIGHT CLEARANCE <span>mm</span
+            ><input type="number" id="clearance_y" min="0" max="20" step="1" value="0"
+          /></label>
+        </div>
+        <p class="hint">
+          Clearance is subtracted from the measured opening before panels are sized.
+        </p>
+        <div class="pattern-head">
+          <strong>STARTING WIDTHS</strong
+          ><small
+            >Reference examples only. Replace with your measured clear opening before export.</small
+          >
+        </div>
+        <div class="presets opening-presets">
+          <button type="button" data-example-width="610">US example · 610</button
+          ><button type="button" data-example-width="762">US example · 762</button
+          ><button type="button" data-example-width="914">US example · 914</button
+          ><button type="button" data-example-width="800">Metric example · 800</button
+          ><button type="button" data-example-width="1000">Metric example · 1000</button>
+        </div>
 
-  <div class="section-label space">02 / MODULES</div>
-  <div class="two">
-    <label>140 MM COLUMNS<input type="number" id="slots" min="1" max="20" step="1" value="3"></label>
-    <label>140 MM ROWS<input type="number" id="rows" min="1" max="8" step="1" value="2"></label>
-  </div>
-  <label>WALL / BODY DEPTH <span>mm</span><input type="number" id="depth" min="32" max="250" step="1" value="55"></label>
-  <label>CONTROLLER COLUMN
-    <select id="controller"><option value="right">Right side</option><option value="left">Left side</option><option value="none">None</option></select>
-  </label>
-  <div id="suggestion" class="suggestion" hidden><span id="suggestionText"></span><button id="addFan" class="small-button" type="button">Add fan column</button></div>
-  <div class="pattern-head"><div><strong>FAN / SOLID LAYOUT</strong><small>Click a cell to switch it. Top row is shown first.</small></div></div>
-  <div class="presets"><button type="button" id="allFans">All fans</button><button type="button" id="alternate">Alternate</button><button type="button" id="solidColumns">Solid edges</button></div>
-  <div id="patternGrid" class="pattern-grid" aria-label="Fan and solid panel layout"></div>
+        <div class="section-label space">02 / MODULES</div>
+        <div class="two">
+          <label
+            >140 MM COLUMNS<input type="number" id="slots" min="1" max="20" step="1" value="3"
+          /></label>
+          <label
+            >140 MM ROWS<input type="number" id="rows" min="1" max="8" step="1" value="2"
+          /></label>
+        </div>
+        <label
+          >WALL / BODY DEPTH <span>mm</span
+          ><input type="number" id="depth" min="32" max="250" step="1" value="55"
+        /></label>
+        <label
+          >CONTROLLER COLUMN
+          <select id="controller">
+            <option value="right">Right side</option>
+            <option value="left">Left side</option>
+            <option value="none">None</option>
+          </select>
+        </label>
+        <div id="suggestion" class="suggestion" hidden>
+          <span id="suggestionText"></span
+          ><button id="addFan" class="small-button" type="button">Add fan column</button>
+        </div>
+        <div class="pattern-head">
+          <div>
+            <strong>FAN / SOLID LAYOUT</strong
+            ><small>Click a cell to switch it. Top row is shown first.</small>
+          </div>
+        </div>
+        <div class="presets">
+          <button type="button" id="allFans">All fans</button
+          ><button type="button" id="alternate">Alternate</button
+          ><button type="button" id="solidColumns">Solid edges</button>
+        </div>
+        <div id="patternGrid" class="pattern-grid" aria-label="Fan and solid panel layout"></div>
 
-  <div class="section-label space">03 / SIDE PANELS</div>
-  <label>PANEL SIZING<select id="panel_mode"><option value="auto">Automatic, printable widths</option><option value="manual">Enter widths manually</option></select></label>
-  <div id="autoPanels"><label>PLACE SIDE PANELS<select id="side"><option value="right">Right</option><option value="left">Left</option><option value="split">Split across both sides</option></select></label></div>
-  <div id="manualPanels" hidden><div class="two"><label>LEFT WIDTHS <span>mm</span><input id="left_panels" type="text" placeholder="e.g. 60, 80"></label><label>RIGHT WIDTHS <span>mm</span><input id="right_panels" type="text" placeholder="e.g. 140"></label></div><p class="hint">Comma-separated widths, 22–220 mm each. The final panel is adjusted to cover the remaining width.</p><button type="button" id="resetPanels" class="text-button">Use automatic widths</button></div>
-  <div id="panelSummary" class="summary-line">—</div>
+        <div class="section-label space">03 / SIDE PANELS</div>
+        <label
+          >PANEL SIZING<select id="panel_mode">
+            <option value="auto">Automatic, printable widths</option>
+            <option value="manual">Enter widths manually</option>
+          </select></label
+        >
+        <div id="autoPanels">
+          <label
+            >PLACE SIDE PANELS<select id="side">
+              <option value="right">Right</option>
+              <option value="left">Left</option>
+              <option value="split">Split across both sides</option>
+            </select></label
+          >
+        </div>
+        <div id="manualPanels" hidden>
+          <div class="two">
+            <label
+              >LEFT WIDTHS <span>mm</span
+              ><input id="left_panels" type="text" placeholder="e.g. 60, 80" /></label
+            ><label
+              >RIGHT WIDTHS <span>mm</span
+              ><input id="right_panels" type="text" placeholder="e.g. 140"
+            /></label>
+          </div>
+          <p class="hint">
+            Comma-separated widths, 22–220 mm each. The final panel is adjusted to cover the
+            remaining width.
+          </p>
+          <button type="button" id="resetPanels" class="text-button">Use automatic widths</button>
+        </div>
+        <div id="panelSummary" class="summary-line">—</div>
 
-  <div class="section-label space">04 / TOP RAIL</div>
-  <div class="rail-controls"><label>RAIL HEIGHT <span>mm · 0 = none</span><input id="rail" type="number" min="0" max="100" step="1" value="20"></label><button type="button" id="fitRail" class="small-button">Fit sealing rail</button></div>
-  <div class="two"><label>CHANNEL WIDTH <span>mm calculated</span><input id="sash_slot_w" type="number" min="6" max="50" step="1" value="22" readonly></label><label>SASH ENGAGEMENT <span>mm</span><input id="sash_engagement" type="number" min="3" max="20" step="1" value="10"></label></div>
-  <div class="two"><label>LOWER SASH THICKNESS <span>mm measured</span><input id="sash_thickness" type="number" min="4" max="44" step="0.5" value="18"></label><label>SASH GASKET <span>mm compressed</span><input id="sash_gasket" type="number" min="0.5" max="3" step="0.1" value="2"></label></div>
-  <p class="hint">The lowered sash seats into the top rail’s continuous U channel. Apply closed-cell gasket tape along the bottom and both side walls. Channel width is calculated from the measured sash thickness and compressed side gaskets. A 0 mm rail cannot seal a double-hung sash. Fit sealing rail may reduce a row if the opening is too short for both rows and the rail.</p>
+        <div class="section-label space">04 / TOP RAIL</div>
+        <div class="rail-controls">
+          <label
+            >RAIL HEIGHT <span>mm · 0 = none</span
+            ><input id="rail" type="number" min="0" max="100" step="1" value="20" /></label
+          ><button type="button" id="fitRail" class="small-button">Fit sealing rail</button>
+        </div>
+        <div class="two">
+          <label
+            >CHANNEL WIDTH <span>mm calculated</span
+            ><input
+              id="sash_slot_w"
+              type="number"
+              min="6"
+              max="50"
+              step="1"
+              value="22"
+              readonly /></label
+          ><label
+            >SASH ENGAGEMENT <span>mm</span
+            ><input id="sash_engagement" type="number" min="3" max="20" step="1" value="10"
+          /></label>
+        </div>
+        <div class="two">
+          <label
+            >LOWER SASH THICKNESS <span>mm measured</span
+            ><input
+              id="sash_thickness"
+              type="number"
+              min="4"
+              max="44"
+              step="0.5"
+              value="18" /></label
+          ><label
+            >SASH GASKET <span>mm compressed</span
+            ><input id="sash_gasket" type="number" min="0.5" max="3" step="0.1" value="2"
+          /></label>
+        </div>
+        <p class="hint">
+          The lowered sash seats into the top rail’s continuous U channel. Apply closed-cell gasket
+          tape along the bottom and both side walls. Channel width is calculated from the measured
+          sash thickness and compressed side gaskets. A 0 mm rail cannot seal a double-hung sash.
+          Fit sealing rail may reduce a row if the opening is too short for both rows and the rail.
+        </p>
 
-  <div class="section-label space">05 / FAN OUTPUT</div>
-  <label>EXTERIOR LOUVERS<select id="louvers"><option value="1">Bolt-on louver for each fan</option><option value="0">No output louvers</option></select></label>
-  <p class="hint">The fan slides in from outdoors through an unobstructed square pocket. Louvers screw into the solid rear outer corners with M3 screws; no tabs occupy that pocket. The 116 mm outlet still adds flow resistance. For maximum flow in a protected location, omit it.</p>
+        <div class="section-label space">05 / FAN OUTPUT</div>
+        <label
+          >EXTERIOR LOUVERS<select id="louvers">
+            <option value="1">Bolt-on louver for each fan</option>
+            <option value="0">No output louvers</option>
+          </select></label
+        >
+        <p class="hint">
+          The fan slides in from outdoors through an unobstructed square pocket. Louvers screw into
+          the solid rear outer corners with M3 screws; no tabs occupy that pocket. The 116 mm outlet
+          still adds flow resistance. For maximum flow in a protected location, omit it.
+        </p>
 
-  <div class="section-label space">06 / INSULATION</div>
-  <label>SOLID PANEL CORES<select id="insulated"><option value="1">Rigid foam in sealed cassette</option><option value="0">Sealed air cavity (less insulation)</option></select></label>
-  <label>FAN-OFF COVERS<select id="fan_covers"><option value="1">One insulated removable cover per fan</option><option value="0">No removable covers</option></select></label>
-  <label>COVER DEPTH <span>mm</span><input id="cover_depth" type="number" min="20" max="80" step="1" value="45"></label>
-  <div class="two"><label>MAGNET DIAMETER <span>mm</span><input id="magnet_d" type="number" min="4" max="8" step="0.5" value="6"></label><label>MAGNET THICKNESS <span>mm</span><input id="magnet_h" type="number" min="1" max="3" step="0.5" value="2"></label></div>
-  <div class="two"><label>STEEL STRIKE DIAMETER <span>mm</span><input id="strike_d" type="number" min="4" max="10" step="0.5" value="9"></label><label>STEEL STRIKE THICKNESS <span>mm</span><input id="strike_h" type="number" min="0.5" max="1.5" step="0.1" value="1"></label></div>
-  <div class="two"><label>MAGNET POCKET CLEARANCE <span>mm radial</span><input id="magnet_clearance" type="number" min="0.10" max="0.60" step="0.05" value="0.20"></label><label>TOP CLEAT CLEARANCE <span>mm each side</span><input id="cleat_clearance" type="number" min="0.10" max="0.80" step="0.05" value="0.30"></label></div>
-  <label>GASKET THICKNESS <span>mm compressed</span><input id="gasket_thickness" type="number" min="0.5" max="2" step="0.1" value="1.2"></label>
-  <p class="hint">Each cover has two top hooks and two trapped bottom magnets. Print two magnet spacers per cover. Use countersunk steel strike discs and M3 screws in the recessed housing seats. The strike diameter is kept at least as large as the magnet. Bond the shell to its back skin after inserting magnets and spacers. Lift about 5 mm to engage the hooks, then let the magnets close the bottom.</p>
-  <div id="insulationDepth" class="summary-line">Set wall depth to size the panel foam cores.</div>
-  <p class="hint">The deep opening in each wide filler is the foam pocket, not the finished back. Every cassette gets a printed back skin. Cut foam to the list below, fit it before closing the cassette, and seal the back-skin seam. Remove fan covers before running the fans.</p>
+        <div class="section-label space">06 / INSULATION</div>
+        <label
+          >SOLID PANEL CORES<select id="insulated">
+            <option value="1">Rigid foam in sealed cassette</option>
+            <option value="0">Sealed air cavity (less insulation)</option>
+          </select></label
+        >
+        <label
+          >FAN-OFF COVERS<select id="fan_covers">
+            <option value="1">One insulated removable cover per fan</option>
+            <option value="0">No removable covers</option>
+          </select></label
+        >
+        <label
+          >COVER DEPTH <span>mm</span
+          ><input id="cover_depth" type="number" min="20" max="80" step="1" value="45"
+        /></label>
+        <div class="two">
+          <label
+            >MAGNET DIAMETER <span>mm</span
+            ><input id="magnet_d" type="number" min="4" max="8" step="0.5" value="6" /></label
+          ><label
+            >MAGNET THICKNESS <span>mm</span
+            ><input id="magnet_h" type="number" min="1" max="3" step="0.5" value="2"
+          /></label>
+        </div>
+        <div class="two">
+          <label
+            >STEEL STRIKE DIAMETER <span>mm</span
+            ><input id="strike_d" type="number" min="4" max="10" step="0.5" value="9" /></label
+          ><label
+            >STEEL STRIKE THICKNESS <span>mm</span
+            ><input id="strike_h" type="number" min="0.5" max="1.5" step="0.1" value="1"
+          /></label>
+        </div>
+        <div class="two">
+          <label
+            >MAGNET POCKET CLEARANCE <span>mm radial</span
+            ><input
+              id="magnet_clearance"
+              type="number"
+              min="0.10"
+              max="0.60"
+              step="0.05"
+              value="0.20" /></label
+          ><label
+            >TOP CLEAT CLEARANCE <span>mm each side</span
+            ><input
+              id="cleat_clearance"
+              type="number"
+              min="0.10"
+              max="0.80"
+              step="0.05"
+              value="0.30"
+          /></label>
+        </div>
+        <label
+          >GASKET THICKNESS <span>mm compressed</span
+          ><input id="gasket_thickness" type="number" min="0.5" max="2" step="0.1" value="1.2"
+        /></label>
+        <p class="hint">
+          Each cover has two top hooks and two trapped bottom magnets. Print two magnet spacers per
+          cover. Use countersunk steel strike discs and M3 screws in the recessed housing seats. The
+          strike diameter is kept at least as large as the magnet. Bond the shell to its back skin
+          after inserting magnets and spacers. Lift about 5 mm to engage the hooks, then let the
+          magnets close the bottom.
+        </p>
+        <div id="insulationDepth" class="summary-line">
+          Set wall depth to size the panel foam cores.
+        </div>
+        <p class="hint">
+          The deep opening in each wide filler is the foam pocket, not the finished back. Every
+          cassette gets a printed back skin. Cut foam to the list below, fit it before closing the
+          cassette, and seal the back-skin seam. Remove fan covers before running the fans.
+        </p>
 
-  <div class="section-label space">07 / JOINT FIT</div>
-  <div class="two"><label>DOVETAIL CLEARANCE <span>mm radial</span><input id="dovetail_clearance" type="number" min="0.10" max="0.80" step="0.05" value="0.30"></label><label>PIN CLEARANCE <span>mm radial</span><input id="pin_clearance" type="number" min="0.10" max="0.80" step="0.05" value="0.30"></label></div>
-  <p class="hint">Print the male and female dovetail coupons and the male and female pin coupons first. Adjust the two clearances independently until the joints slide together without forcing.</p>
+        <div class="section-label space">07 / JOINT FIT</div>
+        <div class="two">
+          <label
+            >DOVETAIL CLEARANCE <span>mm radial</span
+            ><input
+              id="dovetail_clearance"
+              type="number"
+              min="0.10"
+              max="0.80"
+              step="0.05"
+              value="0.30" /></label
+          ><label
+            >PIN CLEARANCE <span>mm radial</span
+            ><input id="pin_clearance" type="number" min="0.10" max="0.80" step="0.05" value="0.30"
+          /></label>
+        </div>
+        <p class="hint">
+          Print the male and female dovetail coupons and the male and female pin coupons first.
+          Adjust the two clearances independently until the joints slide together without forcing.
+        </p>
 
-  <div class="section-label space">08 / FIT & PARTS</div>
-  <div id="adjustment" class="adjustment" hidden></div>
-  <div id="error" class="error" hidden></div>
-  <div class="metrics"><div><small>FANS</small><strong id="total">—</strong></div><div><small>SOLID CELLS</small><strong id="solidTotal">—</strong></div><div><small>SIDE PANELS</small><strong id="panelTotal">—</strong></div><div><small>TOP GAP</small><strong id="topGap">—</strong></div></div>
-  <div id="fitSummary" class="summary-line"></div>
-  <div class="part-head"><div><strong>PRINT LIST</strong><small>Every unique printable component. Select one to inspect it.</small></div><strong id="printTotal">—</strong></div>
-  <div id="partList" class="part-list"></div>
-  <div class="part-head"><div><strong>FOAM CUT LIST</strong><small>Cut-to-fit core sizes in millimeters; foam is purchased separately.</small></div></div>
-  <div id="foamList" class="config-list"></div>
-  <div id="hardwareSummary" class="summary-line"></div>
-  <div class="part-head"><div><strong>FULL CONFIGURATION</strong><small>Dimensions and layout used for this kit.</small></div></div>
-  <div id="configList" class="config-list"></div>
-  <button id="downloadConfig" class="text-button" type="button">⬇ Download configuration JSON</button>
-  <button id="download" class="primary">⬇ &nbsp; EXPORT PRINTABLE STL KIT</button>
-  <div id="progress" class="progress" role="status">Configure the layout to generate parts.</div>
-  <p class="note">Alignment pegs locate stacked rows. The printed assembly still needs window retention and weather sealing.</p>
-</aside>
-<section class="viewport">
-  <div class="view-top"><div><span class="eyebrow">INTERACTIVE DESIGN STUDIO</span><h2 id="heading">WINDOW ARRAY</h2></div><div class="view-actions"><select id="windowStyle" title="Preview a compatible window type" aria-label="Window style"><option value="double_hung">Raised double-hung</option><option value="slider">Horizontal slider</option><option value="casement">Out-swing casement</option></select><button id="designMode" title="Click parts to configure them" aria-pressed="true">✦ Design mode</button><button id="windowView" title="Show or hide window context" aria-pressed="true">▣ Window on</button><button id="advancedSettings" title="Show full settings">⚙ Full settings</button><button id="sealedView" title="Show or hide insulated fan covers">◧ Show sealed view</button><button id="showElectronics" title="Remove the controller lid in the preview to inspect the ESP32 mock">◩ Show internals</button><button id="viewAssembly" title="Show full assembly">▦ Assembly</button><button id="viewExploded" title="Show each printable part and foam cut in a separated matrix">▦ Exploded matrix</button><button id="reset" title="Reset camera">⌖ Recenter</button><button id="wire" title="Toggle wireframe">◇ Edges</button></div></div>
-  <div id="viewer"><div id="loading">Building OpenSCAD meshes…</div><div id="explodeLabels" class="explode-labels" hidden></div><div id="designInspector" class="design-inspector"><div class="inspector-head"><div><small>CLICK A COMPONENT TO EDIT</small><h3 id="inspectorTitle">Your window build</h3></div><button id="closeInspector" type="button" aria-label="Close editor">×</button></div><p id="inspectorDescription">Click a fan, panel, rail, or window frame to edit it here.</p><div id="inspectorFields"></div></div><div id="windowNote" class="window-note">Raised double-hung · preview context only. Measure the actual clear opening.</div><div class="axis">DRAG TO ORBIT &nbsp; · &nbsp; CLICK A PART TO EDIT &nbsp; · &nbsp; SCROLL TO ZOOM</div></div>
-  <div class="preview-controls"><label for="fanSpeed">PREVIEW FAN SPEED</label><button id="speedDown" class="speed-button" type="button" aria-label="Decrease preview fan speed">−</button><button id="speedPower" class="speed-button" type="button" aria-label="Stop preview fans" aria-pressed="true">⏻</button><button id="speedUp" class="speed-button" type="button" aria-label="Increase preview fan speed">+</button><input id="fanSpeed" type="range" min="0" max="100" value="70"><output id="fanSpeedValue" for="fanSpeed">70%</output><small>The 3D panel buttons work too. Speed changes the blade animation; orbit to the rear and select Show internals to view the ESP32 board.</small></div>
-  <div id="explodeCatalog" class="explode-catalog" hidden></div>
-  <div class="legend"><span><b class="swatch fan"></b> FAN</span><span><b class="swatch grille"></b> GRILLE</span><span><b class="swatch ctrl"></b> CONTROLLER</span><span><b class="swatch filler"></b> CASSETTE</span><span><b class="swatch foam"></b> CUT FOAM</span><span><b class="swatch trim"></b> TOP RAIL</span><span><b class="swatch louver"></b> OUTPUT LOUVER</span><span><b class="swatch cover"></b> FAN COVER</span></div>
-  <div class="footnote"><strong>AIRFLOW PATH</strong> — Rounded 122 mm inlet → 114 mm fan throat → clear rear plenum → 116 mm louver outlet. The dark rotor shows where a purchased fan sits; it is not a printed part. Louvers reduce airflow compared with an unobstructed outlet. Secure the array independently inside the window.</div>
-</section>
-</main>
-<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.163.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.163.0/examples/jsm/"}}</script>
-<script type="module" src="/app.js"></script>
-</body></html>
+        <div class="section-label space">08 / FIT & PARTS</div>
+        <div id="adjustment" class="adjustment" hidden></div>
+        <div id="error" class="error" hidden></div>
+        <div class="metrics">
+          <div><small>FANS</small><strong id="total">—</strong></div>
+          <div><small>SOLID CELLS</small><strong id="solidTotal">—</strong></div>
+          <div><small>SIDE PANELS</small><strong id="panelTotal">—</strong></div>
+          <div><small>TOP GAP</small><strong id="topGap">—</strong></div>
+        </div>
+        <div id="fitSummary" class="summary-line"></div>
+        <div class="part-head">
+          <div>
+            <strong>PRINT LIST</strong
+            ><small>Every unique printable component. Select one to inspect it.</small>
+          </div>
+          <strong id="printTotal">—</strong>
+        </div>
+        <div id="partList" class="part-list"></div>
+        <div class="part-head">
+          <div>
+            <strong>FOAM CUT LIST</strong
+            ><small>Cut-to-fit core sizes in millimeters; foam is purchased separately.</small>
+          </div>
+        </div>
+        <div id="foamList" class="config-list"></div>
+        <div id="hardwareSummary" class="summary-line"></div>
+        <div class="part-head">
+          <div>
+            <strong>FULL CONFIGURATION</strong
+            ><small>Dimensions and layout used for this kit.</small>
+          </div>
+        </div>
+        <div id="configList" class="config-list"></div>
+        <button id="downloadConfig" class="text-button" type="button">
+          ⬇ Download configuration JSON
+        </button>
+        <button id="download" class="primary">⬇ &nbsp; EXPORT PRINTABLE STL KIT</button>
+        <div id="progress" class="progress" role="status">
+          Configure the layout to generate parts.
+        </div>
+        <p class="note">
+          Alignment pegs locate stacked rows. The printed assembly still needs window retention and
+          weather sealing.
+        </p>
+      </aside>
+      <section class="viewport">
+        <div class="view-top">
+          <div>
+            <span class="eyebrow">INTERACTIVE DESIGN STUDIO</span>
+            <h2 id="heading">WINDOW ARRAY</h2>
+          </div>
+          <div class="view-actions">
+            <select
+              id="windowStyle"
+              title="Preview a compatible window type"
+              aria-label="Window style"
+            >
+              <option value="double_hung">Raised double-hung</option>
+              <option value="slider">Horizontal slider</option>
+              <option value="casement">Out-swing casement</option></select
+            ><button id="designMode" title="Click parts to configure them" aria-pressed="true">
+              ✦ Design mode</button
+            ><button id="windowView" title="Show or hide window context" aria-pressed="true">
+              ▣ Window on</button
+            ><button id="advancedSettings" title="Show full settings">⚙ Full settings</button
+            ><button id="sealedView" title="Show or hide insulated fan covers">
+              ◧ Show sealed view</button
+            ><button
+              id="showElectronics"
+              title="Remove the controller lid in the preview to inspect the ESP32 mock"
+            >
+              ◩ Show internals</button
+            ><button id="viewAssembly" title="Show full assembly">▦ Assembly</button
+            ><button
+              id="viewExploded"
+              title="Show each printable part and foam cut in a separated matrix"
+            >
+              ▦ Exploded matrix</button
+            ><button id="reset" title="Reset camera">⌖ Recenter</button
+            ><button id="wire" title="Toggle wireframe">◇ Edges</button>
+          </div>
+        </div>
+        <div id="viewer">
+          <div id="loading">Building OpenSCAD meshes…</div>
+          <div id="explodeLabels" class="explode-labels" hidden></div>
+          <div id="designInspector" class="design-inspector">
+            <div class="inspector-head">
+              <div>
+                <small>CLICK A COMPONENT TO EDIT</small>
+                <h3 id="inspectorTitle">Your window build</h3>
+              </div>
+              <button id="closeInspector" type="button" aria-label="Close editor">×</button>
+            </div>
+            <p id="inspectorDescription">
+              Click a fan, panel, rail, or window frame to edit it here.
+            </p>
+            <div id="inspectorFields"></div>
+          </div>
+          <div id="windowNote" class="window-note">
+            Raised double-hung · preview context only. Measure the actual clear opening.
+          </div>
+          <div class="axis">
+            DRAG TO ORBIT &nbsp; · &nbsp; CLICK A PART TO EDIT &nbsp; · &nbsp; SCROLL TO ZOOM
+          </div>
+        </div>
+        <div class="preview-controls">
+          <label for="fanSpeed">PREVIEW FAN SPEED</label
+          ><button
+            id="speedDown"
+            class="speed-button"
+            type="button"
+            aria-label="Decrease preview fan speed"
+          >
+            −</button
+          ><button
+            id="speedPower"
+            class="speed-button"
+            type="button"
+            aria-label="Stop preview fans"
+            aria-pressed="true"
+          >
+            ⏻</button
+          ><button
+            id="speedUp"
+            class="speed-button"
+            type="button"
+            aria-label="Increase preview fan speed"
+          >
+            +</button
+          ><input id="fanSpeed" type="range" min="0" max="100" value="70" /><output
+            id="fanSpeedValue"
+            for="fanSpeed"
+            >70%</output
+          ><small
+            >The 3D panel buttons work too. Speed changes the blade animation; orbit to the rear and
+            select Show internals to view the ESP32 board.</small
+          >
+        </div>
+        <div id="explodeCatalog" class="explode-catalog" hidden></div>
+        <div class="legend">
+          <span><b class="swatch fan"></b> FAN</span
+          ><span><b class="swatch grille"></b> GRILLE</span
+          ><span><b class="swatch ctrl"></b> CONTROLLER</span
+          ><span><b class="swatch filler"></b> CASSETTE</span
+          ><span><b class="swatch foam"></b> CUT FOAM</span
+          ><span><b class="swatch trim"></b> TOP RAIL</span
+          ><span><b class="swatch louver"></b> OUTPUT LOUVER</span
+          ><span><b class="swatch cover"></b> FAN COVER</span>
+        </div>
+        <div class="footnote">
+          <strong>AIRFLOW PATH</strong> — Rounded 122 mm inlet → 114 mm fan throat → clear rear
+          plenum → 116 mm louver outlet. The dark rotor shows where a purchased fan sits; it is not
+          a printed part. Louvers reduce airflow compared with an unobstructed outlet. Secure the
+          array independently inside the window.
+        </div>
+      </section>
+    </main>
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "https://cdn.jsdelivr.net/npm/three@0.163.0/build/three.module.js",
+          "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.163.0/examples/jsm/"
+        }
+      }
+    </script>
+    <script type="module" src="/app.js"></script>
+  </body>
+</html>

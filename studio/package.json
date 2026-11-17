@@ -5,13 +5,16 @@
   "type": "module",
   "scripts": {
     "dev": "vite --host 0.0.0.0",
-    "build": "vite build"
+    "build": "vite build",
+    "format": "prettier --write \"src/**/*.{js,jsx,css}\" index.html vite.config.js \"../app/static/**/*.{js,mjs,css,html}\" \"../tests/*.mjs\"",
+    "format:check": "prettier --check \"src/**/*.{js,jsx,css}\" index.html vite.config.js \"../app/static/**/*.{js,mjs,css,html}\" \"../tests/*.mjs\""
   },
   "dependencies": {
     "react": "19.2.6",
     "react-dom": "19.2.6"
   },
   "devDependencies": {
+    "prettier": "^3.6.2",
     "vite": "7.3.5"
   }
 }

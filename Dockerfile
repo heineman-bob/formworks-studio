@@ -11,6 +11,12 @@ WORKDIR /project
 COPY app/ ./app/
 COPY --from=studio-builder /studio/dist/ ./studio/dist/
 COPY models/ ./models/
-ENV PYTHONUNBUFFERED=1 QT_QPA_PLATFORM=offscreen
+RUN useradd --create-home --uid 10001 appuser \
+    && mkdir -p /tmp/window-fan-cache \
+    && chown appuser:appuser /tmp/window-fan-cache
+ENV PYTHONUNBUFFERED=1 QT_QPA_PLATFORM=offscreen HOME=/home/appuser
+USER appuser
 EXPOSE 8080
+HEALTHCHECK --interval=30s --timeout=3s --start-period=15s \
+    CMD python -c "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8080/api/health', timeout=2)" || exit 1
 CMD ["python", "app/server.py"]

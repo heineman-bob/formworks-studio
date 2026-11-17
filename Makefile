@@ -3,7 +3,7 @@ OPENSCAD ?= openscad
 SCAD := models/window_fan.scad
 OUT ?= dist/stl
 FILLER_W ?= 60
-TRIM_H ?= 16
+TRIM_H ?= 20
 PANEL_W ?= 140
 RAIL_EDGE ?= middle
 DEPTH ?= 55
@@ -15,11 +15,20 @@ DOVETAIL_CLEARANCE ?= 0.30
 PIN_CLEARANCE ?= 0.30
 FAN_COUNT ?= 3
 ROW_COUNT ?= 2
-PARTS := fan grill louver fan_cover fan_cover_lid left_cap right_cap controller controller_lid spacer filler panel_lid controller_blank top_rail trim_fan trim_controller trim_filler trim_cap test_dovetail_male test_dovetail_female test_pin_male test_pin_female
+PARTS := fan grill louver fan_cover fan_cover_lid magnet_spacer left_cap right_cap controller controller_lid spacer filler panel_lid controller_blank top_rail trim_fan trim_controller trim_filler trim_cap test_dovetail_male test_dovetail_female test_pin_male test_pin_female
 STLS := $(addprefix $(OUT)/,$(addsuffix .stl,$(PARTS)))
 
-.PHONY: all parts preview clean serve studio-build warm-cache docker-up docker-down help
-all: parts
+.PHONY: all parts preview clean serve studio-build warm-cache docker-up docker-down help test check
+all: help
+test:
+	python3 -m unittest discover -s tests -q
+check: test
+	ruff check app tests
+	ruff format --check app tests
+	node --check app/static/app.js
+	node --test tests/*.test.mjs
+	npm run format:check --prefix studio
+	npm run build --prefix studio
 parts: $(STLS)
 $(OUT):
 	mkdir -p "$@"
@@ -41,6 +50,7 @@ warm-cache:
 clean:
 	rm -rf dist/stl
 help:
+	@echo 'make check                       # tests, syntax, format, frontend build'
 	@echo 'make parts FILLER_W=80 TRIM_H=20 DEPTH=55 COVER_DEPTH=45    # individual STLs'
 	@echo 'make preview FAN_COUNT=3 ROW_COUNT=2 FILLER_W=80 DEPTH=55'
 	@echo 'make docker-up                       # http://localhost:8080'

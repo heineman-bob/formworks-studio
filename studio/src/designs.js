@@ -14,4 +14,4 @@ export const designs = [
     measure: 'Window opening',
   },
 ];
-export const getDesign = id => designs.find(design => design.id === id);
+export const getDesign = (id) => designs.find((design) => design.id === id);
